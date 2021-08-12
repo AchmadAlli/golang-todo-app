@@ -4,6 +4,8 @@ import (
 	"github.com/AchmadAlli/golang-todo-app/app"
 	"github.com/AchmadAlli/golang-todo-app/app/controllers"
 	"github.com/AchmadAlli/golang-todo-app/app/database"
+	"github.com/AchmadAlli/golang-todo-app/app/repositories"
+	"github.com/AchmadAlli/golang-todo-app/app/services"
 	"github.com/jinzhu/gorm"
 )
 
@@ -13,7 +15,7 @@ func main() {
 		panic(err)
 	}
 
-	migrate(db)
+	// migrate(db)
 
 	app := app.App{}
 	app.AddDatabase(db)
@@ -24,8 +26,9 @@ func main() {
 }
 
 func listenService(app *app.App, db *gorm.DB) {
+	todoService := services.CreateService(&repositories.TodoRepo{DB: db})
 	todoRouteGroup := app.Router.PathPrefix("/todos").Subrouter()
-	controllers.ListenTodo(todoRouteGroup)
+	controllers.ListenTodo(todoRouteGroup, todoService)
 }
 
 func migrate(db *gorm.DB) {
