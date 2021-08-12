@@ -18,7 +18,7 @@ func (app *App) InitRoutes() {
 	if app.Router == nil {
 		app.Router = mux.NewRouter()
 	}
-	app.Router.HandleFunc("/check", healthCheck)
+	app.Router.HandleFunc("/check", healthCheck).Methods("GET")
 }
 
 func (app *App) AddDatabase(db *gorm.DB) {
