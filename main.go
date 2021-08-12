@@ -13,6 +13,8 @@ func main() {
 		panic(err)
 	}
 
+	migrate(db)
+
 	app := app.App{}
 	app.AddDatabase(db)
 	app.InitRoutes()
@@ -24,4 +26,8 @@ func main() {
 func listenService(app *app.App, db *gorm.DB) {
 	todoRouteGroup := app.Router.PathPrefix("/todos").Subrouter()
 	controllers.ListenTodo(todoRouteGroup)
+}
+
+func migrate(db *gorm.DB) {
+	database.MigrateTodo(db)
 }

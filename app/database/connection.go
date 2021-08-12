@@ -2,7 +2,9 @@ package database
 
 import (
 	"fmt"
+	"log"
 
+	model "github.com/AchmadAlli/golang-todo-app/app/models"
 	utils "github.com/AchmadAlli/golang-todo-app/app/utils"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -28,4 +30,16 @@ func Connect() (*gorm.DB, error) {
 	db = db.Set("gorm:auto_preload", true)
 
 	return db, nil
+}
+
+func MigrateTodo(db *gorm.DB) {
+	err := db.DropTableIfExists(&model.Todo{}).Error
+	if err != nil {
+		log.Fatalf("cannot drop table: %v", err)
+	}
+
+	err = db.AutoMigrate(&model.Todo{}).Error
+	if err != nil {
+		log.Fatalf("cannot migrate table: %v", err)
+	}
 }
