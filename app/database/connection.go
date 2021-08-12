@@ -9,11 +9,13 @@ import (
 )
 
 func Connect() (*gorm.DB, error) {
-	username := utils.GetEnv("DATABASE_USERNAME")
-	password := utils.GetEnv("DATABASE_PASSWORD")
-	database := utils.GetEnv("DATABASE_NAME")
+	username := utils.GetEnv("DB_USERNAME")
+	password := utils.GetEnv("DB_PASSWORD")
+	host := utils.GetEnv("DB_HOST")
+	port := utils.GetEnv("DB_PORT")
+	database := utils.GetEnv("DB_DATABASE")
 
-	destination := fmt.Sprintf("%s:%s@(localhost:3306)/%s??charset=utf8mb4&parseTime=true", username, password, database)
+	destination := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=true", username, password, host, port, database)
 
 	db, err := gorm.Open("mysql", destination)
 	if err != nil {
