@@ -34,5 +34,5 @@ func healthCheck(writer http.ResponseWriter, r *http.Request) {
 		"data": "Ok",
 	}
 
-	utils.Response(writer, response)
+	utils.Response(writer, http.StatusOK, response)
 }
