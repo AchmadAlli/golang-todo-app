@@ -24,7 +24,7 @@ func Connect() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	fmt.Print("Database Connected")
+	log.Println("Database Connected")
 
 	db = db.Set("gorm:table_options", "DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci ENGINE=InnoDB")
 	db = db.Set("gorm:auto_preload", true)

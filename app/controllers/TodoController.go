@@ -1,19 +1,21 @@
 package controllers
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 
+	"github.com/AchmadAlli/golang-todo-app/app"
+	"github.com/AchmadAlli/golang-todo-app/app/repositories"
 	"github.com/AchmadAlli/golang-todo-app/app/services"
 	"github.com/AchmadAlli/golang-todo-app/app/utils"
-	"github.com/gorilla/mux"
 )
 
 var service *services.TodoService
 
-func ListenTodo(route *mux.Router, svc *services.TodoService) {
-	fmt.Println("\nlistening todo controller")
-	service = svc
+func ListenTodo(app *app.App) {
+	log.Println("listening todo controller")
+	service = services.CreateService(&repositories.TodoRepo{DB: app.DB})
+	route := app.Router.PathPrefix("/todos").Subrouter()
 
 	route.HandleFunc("/", index)
 }
